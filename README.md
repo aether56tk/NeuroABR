@@ -57,7 +57,11 @@ PTA is calculated only from available frequency-specific corrected thresholds un
 
 Conversion is stimulus-, transducer-, frequency- and population-dependent. NeuroABR therefore requires an explicit validated correction table/model instead of applying an unsupported universal correction.
 
-## Input format\n\nThe first working app accepts long-format single-trial CSV data with:\n\n`frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude`\n\nRepeated trials are grouped automatically by frequency and intensity. The application currently reports objective ABR thresholds in **dB nHL**. A validated correction table must be supplied before reporting eHL/PTA values.\n\n## Public datasets
+## Input format\n\nThe first working app accepts long-format single-trial CSV data with:\n\n`frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude`\n\nRepeated trials are grouped automatically by frequency and intensity. The application currently reports objective ABR thresholds in **dB nHL**. A validated correction table must be supplied before reporting eHL/PTA values.\n\n## First real-data run
+
+Follow [`docs/GETTING_STARTED_DATA.md`](docs/GETTING_STARTED_DATA.md) to install WFDB support, download a small EARNDB subset, run the tests, and launch the Streamlit app.
+
+## Public datasets
 
 See [`docs/DATASETS.md`](docs/DATASETS.md) for the human and research ABR datasets identified for NeuroABR development and validation, including PhysioNet EARH/EARNDB, pABR Dryad data, and the 70-adult hearing-loss pABR study whose raw data are available on request.
 
