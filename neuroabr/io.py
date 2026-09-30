@@ -62,3 +62,33 @@ def load_multilevel_csv(path: str | Path) -> dict[float, ABRWaveform]:
             intensity_db_nhl=float(intensity),
         )
     return result
+
+
+def load_trial_csv(path: str | Path) -> list[dict]:
+    """Load long-format single-trial ABR CSV rows.
+
+    Required columns:
+      frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude
+    """
+    frame = pd.read_csv(path)
+    required = {"frequency_hz", "intensity_db_nhl", "trial_id", "time_ms", "amplitude"}
+    missing = required - set(frame.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
+
+    if frame[list(required)].isna().any().any():
+        raise ValueError("ABR trial CSV contains missing required values.")
+
+    rows: list[dict] = []
+    for (frequency, intensity, trial_id), group in frame.groupby(
+        ["frequency_hz", "intensity_db_nhl", "trial_id"], sort=True
+    ):
+        group = group.sort_values("time_ms")
+        rows.append({
+            "frequency_hz": float(frequency),
+            "intensity_db_nhl": float(intensity),
+            "trial_id": str(trial_id),
+            "time_ms": group["time_ms"].to_numpy(dtype=float),
+            "amplitude": group["amplitude"].to_numpy(dtype=float),
+        })
+    return rows
