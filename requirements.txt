@@ -3,3 +3,4 @@ scipy>=1.13
 pandas>=2.2
 matplotlib>=3.9
 pytest>=8.0
+\nstreamlit>=1.40\n
