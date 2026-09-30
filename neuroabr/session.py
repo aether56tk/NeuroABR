@@ -8,7 +8,7 @@ import numpy as np
 
 from .presto import LevelEvidence, ThresholdFit, fit_threshold, level_evidence
 from .correction import CorrectionTable
-from .clinical import calculate_pta
+from .clinical import FrequencyThreshold, pure_tone_average
 
 
 @dataclass(frozen=True)
