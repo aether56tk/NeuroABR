@@ -1,44 +1,50 @@
 # NeuroABR threshold model
 
-## Two different outputs
+## Goal
 
-### 1. ABR response threshold
+NeuroABR is designed to automate frequency-specific ABR threshold estimation using objective response detection inspired by the detection philosophy of ASSR.
 
-When the user supplies ABR recordings at multiple stimulus intensities, NeuroABR can estimate the lowest tested intensity at which a reproducible response is detected.
+It does **not** claim that a single broadband click ABR contains enough information to reconstruct a complete audiogram.
 
-Example:
+## Frequency-specific workflow
 
-| Level | Response |
-|---:|---|
-| 60 dB nHL | Present |
-| 40 dB nHL | Present |
-| 30 dB nHL | Present |
-| 20 dB nHL | Absent |
+1. Identify stimulus frequency from metadata.
+2. Group recordings by frequency and stimulus intensity.
+3. Preprocess the waveform.
+4. Compare independent subaverages/repeats.
+5. Calculate reproducibility and SNR.
+6. Combine objective response evidence with Wave-V evidence.
+7. Search the intensity series for the lowest reproducible response.
+8. Apply a validated nHL→eHL correction for the exact stimulus/transducer/population.
+9. Display frequency-specific estimated thresholds.
+10. Calculate PTA only from the available corrected frequency thresholds under the selected PTA definition.
 
-Output: **estimated ABR response threshold = 30 dB nHL**.
+## Example
 
-### 2. PTA
+500 Hz:
+60 present → 40 present → 30 present → 20 absent
 
-PTA is a pure-tone audiometric measure. NeuroABR must not label a single ABR waveform as a PTA.
+Estimated ABR response threshold: **30 dB nHL**.
 
-To calculate PTA, the system needs frequency-specific thresholds, for example:
+This is an automated electrophysiologic threshold estimate, not automatically a behavioral hearing threshold.
 
-- 500 Hz
-- 1000 Hz
-- 2000 Hz
+## ASSR-inspired objective detection
 
-and those thresholds must be in an appropriate comparable scale (such as dB HL or appropriately corrected dB eHL).
+ASSR demonstrates the value of objective statistical response detection. NeuroABR adapts that principle to ABR by combining:
 
-The first implementation therefore calculates:
+- independent-subaverage reproducibility
+- cross-correlation
+- SNR
+- response consistency across intensity
+- Wave-V latency/morphology
+- confidence scoring
 
-**PTA = (500 + 1000 + 2000 Hz thresholds) / 3**
+Future versions can add frequency-domain/statistical detectors where the acquisition format supports them.
 
-only when all three frequency-specific values are supplied.
+## PTA
 
-## Future ABR → eHL support
+PTA requires frequency-specific thresholds. Missing frequencies are reported as missing rather than fabricated.
 
-Frequency-specific ABR nHL-to-eHL correction will be implemented as a configurable table/model. It must be tied to stimulus type, transducer, frequency and the validation dataset rather than using a universal correction.
+## Validation
 
-## Clinical status
-
-All automated outputs are research estimates requiring clinician verification. NeuroABR does not diagnose hearing loss.
+The system must be validated against clinician-labelled human ABR thresholds and, where PTA comparison is intended, appropriate behavioral audiometry. Performance should be reported with agreement/error metrics rather than assuming the automated output is correct.
