@@ -57,7 +57,7 @@ PTA is calculated only from available frequency-specific corrected thresholds un
 
 Conversion is stimulus-, transducer-, frequency- and population-dependent. NeuroABR therefore requires an explicit validated correction table/model instead of applying an unsupported universal correction.
 
-## Status
+## Input format\n\nThe first working app accepts long-format single-trial CSV data with:\n\n`frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude`\n\nRepeated trials are grouped automatically by frequency and intensity. The application currently reports objective ABR thresholds in **dB nHL**. A validated correction table must be supplied before reporting eHL/PTA values.\n\n## Status
 
 **Research prototype / clinician decision-support only.** Automated estimates require validation against clinician-labelled human datasets before clinical use.
 
@@ -70,9 +70,10 @@ Conversion is stimulus-, transducer-, frequency- and population-dependent. Neuro
 - [x] Frequency-specific threshold model
 - [x] Objective response score
 - [x] nHL→eHL correction framework
-- [ ] Multi-subaverage ABR engine
+- [x] Multi-subaverage objective ABR engine
+- [x] Response-curve threshold estimation
+- [x] Streamlit upload application
 - [ ] Sequential/bracketed threshold search
-- [ ] Interactive web application
 - [ ] Audiogram/PTA dashboard
 - [ ] Human-data validation
 - [ ] Machine-learning response classifier
