@@ -20,7 +20,7 @@ def main() -> None:
         raise SystemExit("No EARNDB averaged records matched the requested subjects.")
     dl_dir = Path("data/raw/earndb")
     dl_dir.mkdir(parents=True, exist_ok=True)
-    wfdb.dl_database("earndb/1.0.0/average", str(dl_dir), records=records, annotators=None, keep_subdirs=True, overwrite=False)
+    wfdb.dl_database("earndb/1.0.0", str(dl_dir), records=records, annotators=None, keep_subdirs=True, overwrite=False)
     rows = []
     for record in records:
         item = read_earndb_average(dl_dir / record)
