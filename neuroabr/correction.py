@@ -9,36 +9,24 @@ class CorrectionFactor:
     correction_db: float
 
 
+@dataclass(frozen=True)
 class CorrectionTable:
-    """Explicit frequency-specific nHL -> eHL correction table.
+    """Validated stimulus/transducer/population-specific nHL -> eHL corrections.
 
-    No universal correction values are hard-coded. A validated table must be
-    supplied for the stimulus, transducer and population being studied.
+    correction_db is subtracted from the measured nHL threshold.
+    Do not use generic values unless they have been validated for the
+    acquisition protocol.
     """
+    factors: tuple[CorrectionFactor, ...]
+    name: str = "custom"
 
-    def __init__(self, factors: list[CorrectionFactor]):
-        self._factors = {float(x.frequency_hz): float(x.correction_db) for x in factors}
+    def apply(self, frequency_hz: float, threshold_db_nhl: float) -> float:
+        for factor in self.factors:
+            if float(factor.frequency_hz) == float(frequency_hz):
+                return float(threshold_db_nhl - factor.correction_db)
+        raise KeyError(
+            f"No validated correction exists for {frequency_hz:g} Hz in {self.name!r}."
+        )
 
-    def convert(self, frequency_hz: float, threshold_db_nhl: float) -> float:
-        if frequency_hz not in self._factors:
-            raise KeyError(
-                f"No validated correction for {frequency_hz:g} Hz. "
-                "Supply a stimulus/transducer-specific correction table."
-            )
-        return float(threshold_db_nhl + self._factors[frequency_hz])
-
-    def convert_thresholds(self, thresholds):
-        return [
-            type(x)(
-                frequency_hz=x.frequency_hz,
-                threshold_db_nhl=x.threshold_db_nhl,
-                threshold_db_ehl=(
-                    None if x.threshold_db_nhl is None
-                    else self.convert(x.frequency_hz, x.threshold_db_nhl)
-                ),
-                confidence=x.confidence,
-                method=x.method,
-                status=x.status,
-            )
-            for x in thresholds
-        ]
+    def frequencies(self) -> tuple[float, ...]:
+        return tuple(f.frequency_hz for f in self.factors)
