@@ -4,7 +4,7 @@
 
 NeuroABR is a research platform designed to reduce the manual workload involved in analyzing frequency-specific ABR recordings. It combines ABR waveform processing, reproducibility/cross-correlation, SNR, Wave-V evidence and automated intensity searching to produce frequency-specific **estimated ABR response thresholds**.
 
-## Workflow
+## Research basis\n\nThe objective detector is based on published cross-correlation ABR thresholding concepts. NeuroABR independently implements repeated split-half reproducibility and compares **sigmoid and power-law response curves**, selecting the lower-error fit when sufficient levels are available. citeturn0search0turn0search2\n\nFrequency-specific ABR threshold estimation requires frequency-specific stimuli; common clinical frequencies include 500, 1000, 2000 and 4000 Hz, with intensity reduced toward the lowest repeatable response. nHL-to-eHL correction is protocol/system dependent. citeturn0search4turn0search13\n\n## Workflow
 
 ```
 Frequency-specific ABR
@@ -71,7 +71,7 @@ Conversion is stimulus-, transducer-, frequency- and population-dependent. Neuro
 - [x] Objective response score
 - [x] nHL→eHL correction framework
 - [x] Multi-subaverage objective ABR engine
-- [x] Response-curve threshold estimation
+- [x] Response-curve threshold estimation (sigmoid + power-law model selection)
 - [x] Streamlit upload application
 - [ ] Sequential/bracketed threshold search
 - [ ] Audiogram/PTA dashboard
