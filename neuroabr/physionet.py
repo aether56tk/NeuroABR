@@ -77,7 +77,7 @@ def read_earndb_average(record_name: str | Path, *, pn_dir: str | None = None) -
         unit=str(fields["units"][channel]), record_name=record_name,
     )
 
-def list_earndb_average_records(records: list[str] | None = None, *, pn_dir: str = "earndb/1.0.0/average") -> list[str]:
+def list_earndb_average_records(records: list[str] | None = None, *, pn_dir: str = "earndb/1.0.0") -> list[str]:
     """List EARNDB averaged records without downloading waveform data."""
     _require_wfdb()
     available = wfdb.get_record_list(pn_dir)
