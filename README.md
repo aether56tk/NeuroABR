@@ -1,57 +1,78 @@
 # NeuroABR
 
-NeuroABR is an open-source research platform for Auditory Brainstem Response (ABR) waveform analysis.
+**Frequency-specific automated ABR threshold estimation using objective response detection.**
 
-## Current scope
+NeuroABR is a research platform designed to reduce the manual workload involved in analyzing frequency-specific ABR recordings. It combines ABR waveform processing, reproducibility/cross-correlation, SNR, Wave-V evidence and automated intensity searching to produce frequency-specific **estimated ABR response thresholds**.
 
-- Import ABR waveform CSV files
-- Preprocess waveforms with baseline correction and configurable band-pass filtering
-- Estimate response strength using reproducibility/correlation and SNR-style metrics
-- Generate response-present / response-absent decisions
-- Estimate the lowest tested intensity with a detectable response
-- Visualize stacked ABR waveforms
-- Keep results explicitly research-oriented and clinician-reviewable
+## Workflow
 
-## Research safety
-
-NeuroABR is a research/decision-support prototype. An automated estimate must not be treated as an autonomous clinical diagnosis or as a direct dB HL hearing threshold without appropriate validation and stimulus/transducer-specific correction.
-
-## CSV format
-
-The first version accepts a CSV with:
-
-- `time_ms`: time in milliseconds
-- `amplitude`: voltage/amplitude
-- Optional `intensity_db_nhl`: stimulus intensity for each row
-
-For multi-level datasets, the preferred format is one file per intensity, or a long-format CSV with an `intensity_db_nhl` column.
-
-Example:
-
-```csv
-time_ms,amplitude,intensity_db_nhl
-0.0,0.012,80
-0.1,0.010,80
-...
+```
+Frequency-specific ABR
+        ↓
+Signal quality + preprocessing
+        ↓
+Independent subaverage comparison
+        ↓
+Objective response detection
+        ↓
+Wave-V candidate analysis
+        ↓
+Automated threshold search
+        ↓
+Validated nHL → eHL correction
+        ↓
+Audiogram-style frequency display
+        ↓
+PTA-style summary when appropriate
 ```
 
-## Development
+## Why NeuroABR?
 
-Python 3.10+ is recommended.
+The goal is to automate repetitive waveform inspection and intensity stepping. The detector combines:
 
-```bash
-pip install -r requirements.txt
-pytest
-python -m neuroabr.cli --help
-```
+- waveform reproducibility
+- cross-correlation
+- SNR
+- objective response evidence
+- Wave-V morphology and latency
+- neighboring intensity consistency
+- confidence scoring
+- frequency-specific threshold estimation
+
+The objective-detection philosophy is inspired by ASSR, but NeuroABR is an **ABR-specific** analysis system, not an ASSR converter.
+
+## Important limitation
+
+A broadband click-ABR waveform does **not** provide enough independent frequency information to reconstruct a complete 250–8000 Hz audiogram by itself.
+
+For frequency-specific estimation, NeuroABR expects frequency-specific ABR recordings such as tone-burst/chirp ABR, together with stimulus-frequency metadata.
+
+NeuroABR will not fabricate missing frequencies.
+
+## PTA
+
+PTA is calculated only from available frequency-specific corrected thresholds under the selected PTA definition. A single ABR waveform is not automatically labelled as a conventional behavioral PTA.
+
+## nHL → eHL
+
+Conversion is stimulus-, transducer-, frequency- and population-dependent. NeuroABR therefore requires an explicit validated correction table/model instead of applying an unsupported universal correction.
+
+## Status
+
+**Research prototype / clinician decision-support only.** Automated estimates require validation against clinician-labelled human datasets before clinical use.
 
 ## Roadmap
 
-1. Waveform import and validation
-2. DSP preprocessing
-3. Reproducibility/response detection
-4. Wave V candidate detection
-5. Automated threshold estimation
-6. ABRpresto-inspired cross-correlation module
-7. Validation against clinician-labelled human ABR datasets
-8. Web interface and report generation
+- [x] CSV waveform ingestion
+- [x] Baseline correction and band-pass filtering
+- [x] Correlation/SNR response metrics
+- [x] Wave-V candidate detector
+- [x] Frequency-specific threshold model
+- [x] Objective response score
+- [x] nHL→eHL correction framework
+- [ ] Multi-subaverage ABR engine
+- [ ] Sequential/bracketed threshold search
+- [ ] Interactive web application
+- [ ] Audiogram/PTA dashboard
+- [ ] Human-data validation
+- [ ] Machine-learning response classifier
