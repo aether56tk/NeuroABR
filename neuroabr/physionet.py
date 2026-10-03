@@ -12,8 +12,8 @@ except ImportError:  # pragma: no cover
     wfdb = None
 
 _EARNDB_RE = re.compile(
-    r"^(?P<subject>N\\d+)_evoked_ave(?P<level>[-+]?\\d+(?:\\.\\d+)?)"
-    r"_F(?P<freq>[-+]?\\d+(?:\\.\\d+)?)_R(?P<rep>\\d+)(?:_x)?$",
+    r"^(?P<subject>N\d+)_evoked_ave(?P<level>[-+]?\\d+(?:\\.\\d+)?)"
+    r"_F(?P<freq>[-+]?\d+(?:\.\d+)?)_R(?P<rep>\d+)(?:_x)?$",
     re.IGNORECASE,
  )
 
