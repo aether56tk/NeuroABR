@@ -1,3 +1,5 @@
+![Tests](https://github.com/aether56tk/NeuroABR/actions/workflows/tests.yml/badge.svg)
+
 # NeuroABR
 
 **Frequency-specific automated ABR threshold estimation using objective response detection.**
