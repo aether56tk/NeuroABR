@@ -4,7 +4,13 @@
 
 NeuroABR is a research platform designed to reduce the manual workload involved in analyzing frequency-specific ABR recordings. It combines ABR waveform processing, reproducibility/cross-correlation, SNR, Wave-V evidence and automated intensity searching to produce frequency-specific **estimated ABR response thresholds**.
 
-## Research basis\n\nThe objective detector is based on published cross-correlation ABR thresholding concepts. NeuroABR independently implements repeated split-half reproducibility and compares **sigmoid and power-law response curves**, selecting the lower-error fit when sufficient levels are available. citeturn0search0turn0search2\n\nFrequency-specific ABR threshold estimation requires frequency-specific stimuli; common clinical frequencies include 500, 1000, 2000 and 4000 Hz, with intensity reduced toward the lowest repeatable response. nHL-to-eHL correction is protocol/system dependent. citeturn0search4turn0search13\n\n## Workflow
+## Research basis
+
+The objective detector is based on published cross-correlation ABR thresholding concepts. NeuroABR independently implements repeated split-half reproducibility and compares **sigmoid and power-law response curves**, selecting the lower-error fit when sufficient levels are available. citeturn0search0turn0search2
+
+Frequency-specific ABR threshold estimation requires frequency-specific stimuli; common clinical frequencies include 500, 1000, 2000 and 4000 Hz, with intensity reduced toward the lowest repeatable response. nHL-to-eHL correction is protocol/system dependent. citeturn0search4turn0search13
+
+## Workflow
 
 ```
 Frequency-specific ABR
@@ -57,7 +63,15 @@ PTA is calculated only from available frequency-specific corrected thresholds un
 
 Conversion is stimulus-, transducer-, frequency- and population-dependent. NeuroABR therefore requires an explicit validated correction table/model instead of applying an unsupported universal correction.
 
-## Input format\n\nThe first working app accepts long-format single-trial CSV data with:\n\n`frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude`\n\nRepeated trials are grouped automatically by frequency and intensity. The application currently reports objective ABR thresholds in **dB nHL**. A validated correction table must be supplied before reporting eHL/PTA values.\n\n## First real-data run
+## Input format
+
+The first working app accepts long-format single-trial CSV data with:
+
+`frequency_hz, intensity_db_nhl, trial_id, time_ms, amplitude`
+
+Repeated trials are grouped automatically by frequency and intensity. The application currently reports objective ABR thresholds in **dB nHL**. A validated correction table must be supplied before reporting eHL/PTA values.
+
+## First real-data run
 
 Follow [`docs/GETTING_STARTED_DATA.md`](docs/GETTING_STARTED_DATA.md) to install WFDB support, download a small EARNDB subset, run the tests, and launch the Streamlit app.
 
