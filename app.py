@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import io
 import tempfile
+import json
+from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
@@ -80,6 +82,16 @@ try:
     )
 
     st.subheader("Frequency-specific results")
+
+    quality = pd.DataFrame([{
+        "Rows": len(data),
+        "Frequencies": data["frequency_hz"].nunique(),
+        "Intensity levels": data["intensity_db_nhl"].nunique(),
+        "Trials": data["trial_id"].nunique(),
+        "Sampling points": len(data),
+    }])
+    st.caption("Input summary")
+    st.dataframe(quality, use_container_width=True, hide_index=True)
     table = pd.DataFrame([
         {
             "Frequency (Hz)": r.frequency_hz,
@@ -105,6 +117,52 @@ try:
                 for e in r.levels
             ])
             st.dataframe(evidence, use_container_width=True)
+
+    chart_rows = [
+        {"frequency_hz": r.frequency_hz, "threshold_db_nhl": r.threshold_db_nhl}
+        for r in result.frequencies
+        if r.threshold_db_nhl is not None
+    ]
+    if chart_rows:
+        st.subheader("Threshold overview")
+        chart = pd.DataFrame(chart_rows).sort_values("frequency_hz").set_index("frequency_hz")
+        st.line_chart(chart)
+
+    export_rows = [
+        {
+            "frequency_hz": r.frequency_hz,
+            "threshold_db_nhl": r.threshold_db_nhl,
+            "confidence": r.confidence,
+            "fit_status": r.fit.status,
+            "status": r.status,
+        }
+        for r in result.frequencies
+    ]
+    export_csv = pd.DataFrame(export_rows).to_csv(index=False)
+    manifest = {
+        "software": "NeuroABR",
+        "exported_at_utc": datetime.now(timezone.utc).isoformat(),
+        "n_resamples": int(n_resamples),
+        "criterion": float(criterion),
+        "seed": int(seed),
+        "rows": int(len(data)),
+        "frequencies_hz": sorted(float(x) for x in data["frequency_hz"].unique()),
+        "results": export_rows,
+        "warnings": result.warnings,
+    }
+    st.subheader("Export")
+    st.download_button(
+        "Download threshold CSV",
+        export_csv,
+        file_name="neuroabr_thresholds.csv",
+        mime="text/csv",
+    )
+    st.download_button(
+        "Download analysis JSON",
+        json.dumps(manifest, indent=2),
+        file_name="neuroabr_analysis.json",
+        mime="application/json",
+    )
 
     if result.warnings:
         for warning in result.warnings:
