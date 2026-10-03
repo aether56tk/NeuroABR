@@ -65,6 +65,13 @@ Follow [`docs/GETTING_STARTED_DATA.md`](docs/GETTING_STARTED_DATA.md) to install
 
 See [`docs/DATASETS.md`](docs/DATASETS.md) for the human and research ABR datasets identified for NeuroABR development and validation, including PhysioNet EARH/EARNDB, pABR Dryad data, and the 70-adult hearing-loss pABR study whose raw data are available on request.
 
+## Project files
+
+- [Validation protocol](docs/VALIDATION_PROTOCOL.md)
+- [Security policy](SECURITY.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Citation metadata](CITATION.cff)
+
 ## Validation protocol
 
 See [`docs/VALIDATION_PROTOCOL.md`](docs/VALIDATION_PROTOCOL.md) for the empirical validation workflow, required metadata, agreement analysis and version-freeze requirements.
